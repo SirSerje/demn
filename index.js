@@ -9,6 +9,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // Connect to MongoDB
+// TODO : to clarify
 //      MONGO_INITDB_ROOT_USERNAME: root
 //       MONGO_INITDB_ROOT_PASSWORD: example
 mongoose
