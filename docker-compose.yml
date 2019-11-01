@@ -9,6 +9,8 @@ services:
       - '${API_PORT}:${API_PORT}'
     links:
       - mongo
+    volumes:
+      - ./:/usr/src/app
 # mongo database container
   mongo:
     container_name: ${MONGO_NAME}
