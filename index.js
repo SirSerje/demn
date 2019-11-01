@@ -1,7 +1,8 @@
+const dotenv = require('dotenv');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
-
+dotenv.config();
 const app = express();
 
 app.set('view engine', 'ejs');
@@ -13,7 +14,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //       MONGO_INITDB_ROOT_PASSWORD: example
 mongoose
   .connect(
-    'mongodb://mongo:27017/docker-node-mongo',
+    `mongodb://${process.env.MONGO_PATH}:${process.env.MONGO_PORT}/docker-node-mongo`,
     { useNewUrlParser: true }
   )
   .then(() => console.log('MongoDB Connected'))
@@ -35,6 +36,5 @@ app.post('/item/add', (req, res) => {
   newItem.save().then(item => res.redirect('/'));
 });
 
-const port = 3000;
-
-app.listen(port, () => console.log('Server running...'));
+const port = process.env.API_PORT;
+app.listen(port, () => console.log(`Server running... at port ${port}`));

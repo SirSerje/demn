@@ -1,28 +1,35 @@
 version: '3'
 services:
+# container which builds from dockerfile (backend)
   app:
     container_name: docker-node-mongo
     restart: always
     build: .
     ports:
-      - '80:3000'
+      - '${API_PORT}:${API_PORT}'
     links:
       - mongo
+# mongo database container
   mongo:
-    container_name: mongo
+    container_name: ${MONGO_NAME}
     image: mongo
+    command: mongod --port ${MONGO_PORT}
     ports:
-      - '27017:27017'
+      - '${MONGO_PORT}:${MONGO_PORT}'
     #environment:
       #- MONGO_INITDB_ROOT_USERNAME=${MONGO_ROOT_USER}
       #- MONGO_INITDB_ROOT_PASSWORD=${MONGO_ROOT_PASSWORD}
       #- MONGO_INITDB_DATABASE=project
+
+
+# mongo-express (UI for mongo db)
   mongo-express:
     image: mongo-express
     environment:
       - ME_CONFIG_MONGODB_SERVER=mongo
-      - ME_CONFIG_MONGODB_PORT=27017
-      - ME_CONFIG_MONGODB_ENABLE_ADMIN=false
+      - ME_CONFIG_MONGODB_PORT=${MONGO_PORT}
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - VCAP_APP_PORT=${MONGO_EXPRESS_PORT}
       #- ME_CONFIG_MONGODB_AUTH_DATABASE=admin
       #- ME_CONFIG_MONGODB_AUTH_USERNAME=${MONGO_ROOT_USER}
       #- ME_CONFIG_MONGODB_AUTH_PASSWORD=${MONGO_ROOT_PASSWORD}
@@ -31,4 +38,4 @@ services:
     depends_on:
       - mongo
     ports:
-      - "8081:8081"
+      - "${MONGO_EXPRESS_PORT}:${MONGO_EXPRESS_PORT}"
