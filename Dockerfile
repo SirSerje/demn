@@ -1,4 +1,4 @@
-FROM node:10
+FROM node:12
 
 WORKDIR /usr/src/app
 
@@ -12,4 +12,4 @@ COPY . .
 
 EXPOSE ${API_PORT}
 
-CMD ["npm", "start"]
+CMD ["yarn", "start"]

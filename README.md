@@ -1,20 +1,15 @@
-# Docker Node MongoDB Example
+# Demnest
 
-> Simple example of a dockerized Node/Mongo app
+docker express mongo node nest
 
-## Quick Start
+## How to start
 
-```bash
-# Run in Docker
-docker-compose up
-# use -d flag to run in background
+ - ensure you have running Docker
+ - `yarn dev` start NestJS locally (port 3000 by default)
+ - `docker-compose up` to build and run images
+ 
+### Inside container: 
 
-# Tear down
-docker-compose down
-
-# To be able to edit files, add volume to compose file
-volumes: ['./:/usr/src/app']
-
-# To re-build
-docker-compose build
-```
+- `3517` - frontend on ejs
+- `28018` - mongo DB (can be accessible with robo3T or mongo-express)
+- `8054` - mongo express (UI for mongo)
