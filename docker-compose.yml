@@ -4,13 +4,30 @@ services:
   app:
     container_name: docker-node-mongo
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile.express
     ports:
       - '${API_PORT}:${API_PORT}'
     links:
       - mongo
     volumes:
       - ./:/usr/src/app
+
+# setup nest.js server
+#  nest-app:
+#    container_name: demnest
+#    restart: always
+#    build:
+#      context: .
+#      dockerfile: ./Dockerfile.nest
+#    ports:
+#      - '${NEST_PORT}:${NEST_PORT}'
+#    links:
+#      - mongo
+#    volumes:
+#      - ./:/usr/src/app
+
 # mongo database container
   mongo:
     container_name: ${MONGO_NAME}
