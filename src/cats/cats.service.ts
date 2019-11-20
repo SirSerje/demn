@@ -13,6 +13,20 @@ export class CatsService {
     return await createdCat.save();
   }
 
+  async update(id, createCatDto: CreateCatDto) {
+    return this.catModel.update({"_id": id}, createCatDto);
+  }
+
+  //TODO: add return type
+  async getById(id: string) {
+    return this.catModel.findById(id);
+  }
+
+  //TODO: add return type
+  async remove(id: string) {
+    return this.catModel.remove({"_id": id})
+  }
+
   async findAll(): Promise<Cat[]> {
     return await this.catModel.find().exec();
   }
