@@ -1,8 +1,8 @@
 {
-  "name": "nest-typescript-starter",
+  "name": "demnest",
   "private": true,
-  "version": "1.0.0",
-  "description": "Nest TypeScript starter repository",
+  "version": "0.0.1",
+  "description": "docker express mongo node nest playground",
   "license": "MIT",
   "scripts": {
     "prebuild": "rimraf dist",

@@ -1,56 +1,91 @@
-import {Controller, Get, Post, Body, Delete, Put, Param, HttpException} from '@nestjs/common';
-import { CreateCatDto } from './dto/create-cat.dto';
-import { CatsService } from './cats.service';
-import { Cat } from './interfaces/cat.interface';
+import {Body, Controller, Delete, Get, HttpException, Param, Post, Put} from '@nestjs/common';
+import {CreateCatDto} from './dto/create-cat.dto';
+import {CatsService} from './cats.service';
+import {Cat} from './interfaces/cat.interface';
+
+//TODO: move typings from here
+type MongooseResponse = {
+    n: number,
+    nModified: number,
+    ok: number,
+}
+
+//FIXME: is it correct to all optional params
+type MongooseRemoveResponse = {
+    n?: number,
+    ok?: number,
+    deletedCount?: number,
+}
+
+const statusCodes = {
+    NOT_FOUND: 404,
+};
 
 //TODO: add return types
 @Controller('cat')
 export class CatController {
-  constructor(private readonly catsService: CatsService) {}
-  //C
-  @Post()
-  async createCat(@Body() createCatDto: CreateCatDto) {
-    await this.catsService.create(createCatDto);
-  }
-  //R
-  @Get('/:id')
-  async readCat(@Param('id') catId) {
-    return await this.catsService.getById(catId);
-    // return `GET request ${catId}`
-  }
-  //U
-  @Put('/:id')
-  async updateCat(@Body() createCatDto: CreateCatDto, @Param('id') catId) {
-    try {
-      await this.catsService.update(catId, createCatDto);
-      //TODO: add type?
-    } catch (error) {
-      console.log(error);
-      //TODO: correct handling
-      throw new HttpException('kind like this', 600)
+    constructor(private readonly catsService: CatsService) {
     }
-    return `PUT request SUCCESS ${catId}`
-  }
-  //D
-  @Delete('/:id')
-  async deleteCat(@Param('id') catId) {
-    //TODO : wrap in try catch
-    await this.catsService.remove(catId);
-    return `DEL request ${catId}`
-  }
+
+
+    //C
+    @Post()
+    async createCat(@Body() createCatDto: CreateCatDto): Promise<string> {
+        try {
+            await this.catsService.create(createCatDto);
+            return 'created success'
+        } catch (error) {
+            //TODO: make correct error handling
+          throw new HttpException('cant CREATE cat ', statusCodes.NOT_FOUND)
+        }
+    }
+
+    //R
+    @Get('/:id')
+    async readCat(@Param('id') catId): Promise<Cat> {
+        try {
+            return await this.catsService.getById(catId);
+        } catch (error) {
+          throw new HttpException('cant READ cat ', statusCodes.NOT_FOUND)
+        }
+    }
+
+    //U
+    @Put('/:id')
+    async updateCat(@Body() createCatDto: CreateCatDto, @Param('id') catId): Promise<Cat> {
+        try {
+            return await this.catsService.update(catId, createCatDto)
+        } catch (error) {
+            //TODO: correct handling
+            throw new HttpException('cant UPDATE cat', statusCodes.NOT_FOUND)
+        }
+    }
+
+    //D
+    @Delete('/:id')
+    async deleteCat(@Param('id') catId): Promise<MongooseRemoveResponse> {
+        try {
+            return await this.catsService.remove(catId);
+        } catch (error) {
+            throw new HttpException('cant DELETE cat', statusCodes.NOT_FOUND)
+        }
+    }
 }
 
+
+//Will be removed
 @Controller('cats')
 export class CatsController {
-  constructor(private readonly catsService: CatsService) {}
+    constructor(private readonly catsService: CatsService) {
+    }
 
-  @Post()
-  async create(@Body() createCatDto: CreateCatDto) {
-    await this.catsService.create(createCatDto);
-  }
+    @Post()
+    async create(@Body() createCatDto: CreateCatDto) {
+        await this.catsService.create(createCatDto);
+    }
 
-  @Get()
-  async findAll(): Promise<Cat[]> {
-    return this.catsService.findAll();
-  }
+    @Get()
+    async findAll(): Promise<Cat[]> {
+        return this.catsService.findAll();
+    }
 }
