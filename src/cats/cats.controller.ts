@@ -2,24 +2,8 @@ import {Body, Controller, Delete, Get, HttpException, Param, Post, Put} from '@n
 import {CreateCatDto} from './dto/create-cat.dto';
 import {CatsService} from './cats.service';
 import {Cat} from './interfaces/cat.interface';
-
-//TODO: move typings from here
-type MongooseResponse = {
-    n: number,
-    nModified: number,
-    ok: number,
-}
-
-//FIXME: is it correct to all optional params
-type MongooseRemoveResponse = {
-    n?: number,
-    ok?: number,
-    deletedCount?: number,
-}
-
-const statusCodes = {
-    NOT_FOUND: 404,
-};
+import {MongooseRemoveResponse} from "../typings";
+import {statusCodes} from "../constants";
 
 //TODO: add return types
 @Controller('cat')
@@ -72,16 +56,10 @@ export class CatController {
     }
 }
 
-
-//Will be removed
+//TODO: move into separate file
 @Controller('cats')
 export class CatsController {
     constructor(private readonly catsService: CatsService) {
-    }
-
-    @Post()
-    async create(@Body() createCatDto: CreateCatDto) {
-        await this.catsService.create(createCatDto);
     }
 
     @Get()
