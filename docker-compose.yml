@@ -14,19 +14,22 @@ services:
     volumes:
       - ./:/usr/src/app
 
-# setup nest.js server
-#  nest-app:
-#    container_name: demnest
-#    restart: always
-#    build:
-#      context: .
-#      dockerfile: ./Dockerfile.nest
-#    ports:
-#      - '${NEST_PORT}:${NEST_PORT}'
-#    links:
-#      - mongo
-#    volumes:
-#      - ./:/usr/src/app
+# mysql localdb
+# host: localhost, port: 3306, user: root, pass: rootpw, db: cabin
+# url: jdbc:mysql://localhost:3306/cabin
+# FIXME: maybe MYSQL_HOST needed
+  cabin_db:
+    image: mysql:latest
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpw
+      MYSQL_DATABASE: cabin
+      MYSQL_USER: cabin
+      MYSQL_PASSWORD: cabinpw
 
 # mongo database container
   mongo:
