@@ -15,8 +15,8 @@ services:
       - ./:/usr/src/app
 
 # mysql localdb
-# host: localhost, port: 3306, user: root, pass: rootpw, db: cabin
-# url: jdbc:mysql://localhost:3306/cabin
+# host: localhost, port: 3307, user: root, pass: rootpw, db: cabin
+# url: jdbc:mysql://localhost:3307/cabin
 # FIXME: maybe MYSQL_HOST needed
   cabin_db:
     image: mysql:latest
@@ -24,7 +24,7 @@ services:
       - "./.mysql-data/db:/var/lib/mysql"
     restart: always
     ports:
-      - 3306:3306
+      - 3307:3306 #3307 outside docker => 3306 - inside
     environment:
       MYSQL_ROOT_PASSWORD: rootpw
       MYSQL_DATABASE: cabin
