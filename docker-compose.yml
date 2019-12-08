@@ -14,20 +14,17 @@ services:
     volumes:
       - ./:/usr/src/app
 
-# mysql localdb
-# host: localhost, port: 3307, user: root, pass: rootpw, db: cabin
-# url: jdbc:mysql://localhost:3307/cabin
-# FIXME: maybe MYSQL_HOST needed
+# TODO : MYSQL_PASSWORD, MYSQL_USER add to dotenv
   cabin_db:
     image: mysql:latest
     volumes:
       - "./.mysql-data/db:/var/lib/mysql"
     restart: always
     ports:
-      - 3307:3306 #3307 outside docker => 3306 - inside
+      - '${SQL_PORT}:3306' #3307 outside docker => 3306 - inside
     environment:
-      MYSQL_ROOT_PASSWORD: rootpw
-      MYSQL_DATABASE: cabin
+      MYSQL_ROOT_PASSWORD: '${SQL_PASS}'
+      MYSQL_DATABASE: '${SQL_DB}'
       MYSQL_USER: cabin
       MYSQL_PASSWORD: cabinpw
 

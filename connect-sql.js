@@ -1,14 +1,17 @@
 // Connect through raw sql
 // This script running not in docker
-var mysql      = require('mysql2');
+const dotenv = require('dotenv');
+const mysql = require('mysql2');
 
-var connection = mysql.createConnection({
-  host     : 'localhost',
-  user     : 'root',
-  password : 'rootpw',
-  database : 'cabin',
-  port     : 3307,
-  insecureAuth : true,
+dotenv.config();
+
+const connection = mysql.createConnection({
+  host: `${process.env.SQL_HOST}`,
+  user: `${process.env.SQL_USER}`,
+  password: `${process.env.SQL_PASS}`,
+  database: `${process.env.SQL_DB}`,
+  port: `${process.env.SQL_PORT}`,
+  insecureAuth: true,
 
 });
 
@@ -19,14 +22,3 @@ connection.query(
     console.log(fields);
   }
 );
-
-/*
-connection.connect(function(err) {
-  if (err) {
-    console.error('error connecting: ' + err.stack);
-    return;
-  }
-
-  console.log('connected as id ' + connection.threadId);
-});
-*/
