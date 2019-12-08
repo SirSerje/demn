@@ -14,19 +14,19 @@ services:
     volumes:
       - ./:/usr/src/app
 
-# setup nest.js server
-#  nest-app:
-#    container_name: demnest
-#    restart: always
-#    build:
-#      context: .
-#      dockerfile: ./Dockerfile.nest
-#    ports:
-#      - '${NEST_PORT}:${NEST_PORT}'
-#    links:
-#      - mongo
-#    volumes:
-#      - ./:/usr/src/app
+# TODO : MYSQL_PASSWORD, MYSQL_USER add to dotenv
+  cabin_db:
+    image: mysql:latest
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+    ports:
+      - '${SQL_PORT}:3306' #3307 outside docker => 3306 - inside
+    environment:
+      MYSQL_ROOT_PASSWORD: '${SQL_PASS}'
+      MYSQL_DATABASE: '${SQL_DB}'
+      MYSQL_USER: cabin
+      MYSQL_PASSWORD: cabinpw
 
 # mongo database container
   mongo:
