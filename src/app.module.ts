@@ -6,6 +6,7 @@ import {UsersModule} from './users/users.module';
 import {MongooseModule} from '@nestjs/mongoose';
 import {CatsModule} from "./cats/cats.module";
 
+// TODO: create service
 @Module({
     imports: [AuthModule, UsersModule,
       MongooseModule.forRoot('mongodb://localhost:28012/cats'),

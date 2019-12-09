@@ -1,12 +1,20 @@
 import { ApiModelProperty } from '@nestjs/swagger';
+import {IsNotEmpty, IsNumber, IsString} from 'class-validator';
 
 
-//FIXME: DTO was in example. For what, if Cat interface is the same?
 export class CreateCatDto {
+  @IsNotEmpty()
+  @IsString()
   @ApiModelProperty()
   readonly name: string;
+
+  @IsNotEmpty()
+  @IsNumber()
   @ApiModelProperty()
   readonly age: number;
+
+  @IsNotEmpty()
+  @IsString()
   @ApiModelProperty()
   readonly breed: string;
 }

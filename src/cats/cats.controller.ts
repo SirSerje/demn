@@ -5,7 +5,7 @@ import {Cat} from './interfaces/cat.interface';
 import {MongooseRemoveResponse} from "../typings";
 import {statusCodes} from "../constants";
 
-//TODO: add return types
+// TODO: simplify controller to simple requires, error validation into service
 @Controller('cat')
 export class CatController {
     constructor(private readonly catsService: CatsService) {
