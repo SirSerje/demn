@@ -10,6 +10,6 @@ RUN npm install yarn -g && \
 
 COPY . .
 
-EXPOSE ${API_PORT}
+EXPOSE ${NEST_PORT}
 
-CMD ["yarn", "start"]
+CMD ["yarn", "start:dev"]

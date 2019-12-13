@@ -4,13 +4,30 @@ services:
   app:
     container_name: docker-node-mongo
     restart: always
-    build: .
+    build:
+      context: .
+      dockerfile: ./Dockerfile.express
     ports:
       - '${API_PORT}:${API_PORT}'
     links:
       - mongo
     volumes:
       - ./:/usr/src/app
+
+# TODO : MYSQL_PASSWORD, MYSQL_USER add to dotenv
+  cabin_db:
+    image: mysql:latest
+    volumes:
+      - "./.mysql-data/db:/var/lib/mysql"
+    restart: always
+    ports:
+      - '${SQL_PORT}:3306' #3307 outside docker => 3306 - inside
+    environment:
+      MYSQL_ROOT_PASSWORD: '${SQL_PASS}'
+      MYSQL_DATABASE: '${SQL_DB}'
+      MYSQL_USER: cabin
+      MYSQL_PASSWORD: cabinpw
+
 # mongo database container
   mongo:
     container_name: ${MONGO_NAME}

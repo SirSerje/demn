@@ -26,4 +26,10 @@ export class AuthService {
             access_token: this.jwtService.sign(payload)
         }
     }
+
+    async createNewUser(user: any) {
+    console.log('try to create new user')
+        return { response : "fine"
+        }
+    }
 }
