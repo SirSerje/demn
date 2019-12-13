@@ -3,7 +3,6 @@ import {CreateCatDto} from './dto/create-cat.dto';
 import {CatsService} from './cats.service';
 import {Cat} from './interfaces/cat.interface';
 import {MongooseRemoveResponse} from "../typings";
-import {statusCodes} from "../constants";
 
 // TODO: simplify controller to simple requires, error validation into service
 @Controller('cat')
@@ -11,48 +10,28 @@ export class CatController {
     constructor(private readonly catsService: CatsService) {
     }
 
-
     //C
     @Post()
-    async createCat(@Body() createCatDto: CreateCatDto): Promise<string> {
-        try {
-            await this.catsService.create(createCatDto);
-            return 'created success'
-        } catch (error) {
-            //TODO: make correct error handling
-          throw new HttpException('cant CREATE cat ', statusCodes.NOT_FOUND)
-        }
+    async createCat(@Body() createCatDto: CreateCatDto): Promise<Cat | object> {
+        return await this.catsService.create(createCatDto);
     }
 
     //R
     @Get('/:id')
-    async readCat(@Param('id') catId): Promise<Cat> {
-        try {
-            return await this.catsService.getById(catId);
-        } catch (error) {
-          throw new HttpException('cant READ cat ', statusCodes.NOT_FOUND)
-        }
+    async readCat(@Param('id') catId): Promise<Cat | object> {
+        return await this.catsService.getById(catId);
     }
 
     //U
     @Put('/:id')
-    async updateCat(@Body() createCatDto: CreateCatDto, @Param('id') catId): Promise<Cat> {
-        try {
-            return await this.catsService.update(catId, createCatDto)
-        } catch (error) {
-            //TODO: correct handling
-            throw new HttpException('cant UPDATE cat', statusCodes.NOT_FOUND)
-        }
+    async updateCat(@Body() createCatDto: CreateCatDto, @Param('id') catId): Promise<Cat | object> {
+        return await this.catsService.update(catId, createCatDto)
     }
 
     //D
     @Delete('/:id')
-    async deleteCat(@Param('id') catId): Promise<MongooseRemoveResponse> {
-        try {
-            return await this.catsService.remove(catId);
-        } catch (error) {
-            throw new HttpException('cant DELETE cat', statusCodes.NOT_FOUND)
-        }
+    async deleteCat(@Param('id') catId): Promise<({ ok?: number; n?: number } & { deletedCount?: number }) | Error> {
+        return await this.catsService.remove(catId);
     }
 }
 
